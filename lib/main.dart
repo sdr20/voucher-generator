@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Required for SystemNavigator.pop()
+import 'package:flutter/services.dart'; 
 
 void main() {
   runApp(VoucherApp());
@@ -15,7 +15,7 @@ class VoucherApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      debugShowCheckedModeBanner: false, // Removed debug logo
+      debugShowCheckedModeBanner: false, 
       home: VoucherHomePage(),
     );
   }
@@ -44,6 +44,7 @@ class _VoucherHomePageState extends State<VoucherHomePage> {
     if (vouchers.isNotEmpty) {
       setState(() {
         selectedVoucher = (vouchers..shuffle()).first;
+        vouchers.remove(selectedVoucher); 
       });
 
       Timer(Duration(seconds: 30), () {
@@ -51,16 +52,21 @@ class _VoucherHomePageState extends State<VoucherHomePage> {
           selectedVoucher = null;
         });
       });
+    } else {
+ 
+      setState(() {
+        selectedVoucher = "No vouchers left!";
+      });
     }
   }
 
   void _exitApp() {
     if (Platform.isAndroid) {
-      SystemNavigator.pop(); // This will close the app on Android
+      SystemNavigator.pop(); 
     } else if (Platform.isIOS) {
-      exit(0); // This will close the app on iOS
+      exit(0); 
     } else {
-      exit(0); // This will close the app on other platforms
+      exit(0); 
     }
   }
 
@@ -75,7 +81,7 @@ class _VoucherHomePageState extends State<VoucherHomePage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            if (selectedVoucher == null)
+            if (selectedVoucher == null || selectedVoucher == "No vouchers left!")
               Center(
                 child: ElevatedButton(
                   onPressed: _generateVoucher,
@@ -123,14 +129,14 @@ class _VoucherHomePageState extends State<VoucherHomePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                    
+
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
                                   selectedVoucher = null;
                                 });
                               },
-                              child: Text('Generate Another Voucher'),
+                              child: Text('Done'),
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                                 textStyle: TextStyle(fontSize: 18),
